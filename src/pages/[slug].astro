@@ -1,0 +1,388 @@
+---
+import { sedes } from '../data/siteData';
+import { ViewTransitions } from 'astro:transitions';
+import Head from '../components/Head.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Hero from '../components/Hero.astro';
+import Section from '../components/Section.astro';
+import GalleryGrid from '../components/GalleryGrid.astro';
+import '../styles/global.css';
+
+export async function getStaticPaths() {
+  return sedes.map(sede => ({
+    params: { slug: sede.slug },
+    props: { sede },
+  }));
+}
+
+const { sede } = Astro.props;
+
+if (!sede) {
+    throw new Error('Sede not found');
+}
+
+// SEO Logic
+const title = `Ristorante Peruviano a Milano - ${sede.name}`;
+const description = `Venite a trovarci nella nostra sede di ${sede.address}. Piatti tipici peruviani, cocktail e atmosfera unica. Prenota ora!`;
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": `Ristorante D'Karbon & Limon - ${sede.name}`,
+  "image": new URL(sede.images.hero, Astro.site).toString(),
+  "url": Astro.url,
+  "telephone": sede.phone,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": sede.address,
+    "addressLocality": "Milano",
+    "addressRegion": "Lombardia",
+    "postalCode": "20100", // Generic, should be refined if possible
+    "addressCountry": "IT"
+  },
+  "geo": {
+      // Placeholder geo, would be better to add to data
+      "@type": "GeoCoordinates",
+       "latitude": 45.4642,
+       "longitude": 9.1900
+  },
+  "openingHoursSpecification": sede.hours.map(h => ({
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "00:00", // Simplified
+      "closes": "00:00"
+  })), // Note: Parsing the string hours to schema object is complex without structured data, keeping simplified or strings.
+  "servesCuisine": "Peruvian",
+  "hasMenu": "#menu"
+};
+---
+
+<html lang="it">
+  <head>
+    <Head title={title} description={description} image={sede.images.hero} schema={schema} />
+    <ViewTransitions />
+  </head>
+  <body class={sede.slug === 'sede-piazza-tirana-22' ? 'theme-tirana' : ''}>
+    <Header prenotaUrl={sede.prenotaUrl} logo={sede.logo} />
+
+    <main>
+      <Hero 
+        image={sede.images.hero} 
+        title={sede.name.toUpperCase()} 
+        subtitle={sede.address}
+        prenotaUrl={sede.prenotaUrl}
+      />
+
+      <Section id="welcome" class="text-center fade-in-section">
+        <div style="font-family: var(--font-heading); margin-bottom: 2rem; color: var(--color-primary);">WELCOME TO</div>
+         <h1>Ristorante D'Karbon & Limon</h1>
+         <p style="max-width: 700px; margin: 0 auto;">
+           Un'esperienza culinaria indimenticabile nel cuore di Milano.
+           Scopri i sapori autentici del Perù.
+         </p>
+      </Section>
+
+      <Section id="menu" dark class="fade-in-section">
+        <div class="split-row">
+            <div class="text-col">
+                <h2>I NOSTRI PIATTI</h2>
+                <p>Lasciati conquistare dai sapori esplosivi della cucina peruviana: ceviche, lomo saltado, e molto altro.</p>
+                <a href={sede.menuFoodUrl} class="btn" target="_blank">
+                    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 5px;">restaurant_menu</span>
+                    MENU FOOD
+                </a>
+            </div>
+             <div class="img-col">
+                <img src={sede.images.food[0]} alt="I Nostri Piatti" class="rounded-img shadow-img" />
+            </div>
+        </div>
+      </Section>
+
+      <Section id="drinks" class="fade-in-section">
+         <div class="split-row reverse">
+            <div class="text-col">
+                <h2>I NOSTRI DRINKS</h2>
+                <p>La nostra selezione di Pisco Sour e cocktail internazionali per accompagnare la tua serata.</p>
+                <a href={sede.menuDrinksUrl} class="btn" target="_blank">
+                    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 5px;">local_bar</span>
+                    MENU DRINKS
+                </a>
+            </div>
+             <div class="img-col">
+                 <img src={sede.images.drinks[0]} alt="I Nostri Drinks" class="rounded-img shadow-img" />
+            </div>
+        </div>
+      </Section>
+
+      <Section id="gallery" dark title="GALLERY" class="fade-in-section">
+        <GalleryGrid images={sede.images.gallery} />
+      </Section>
+
+      <Section id="events" title="EVENTI E PROMOZIONI" class="fade-in-section">
+        <div class="events-grid">
+           {sede.images.events.map(img => (
+               <div class="event-card">
+                 <img src={img} alt="Evento" loading="lazy" />
+               </div>
+           ))}
+        </div>
+      </Section>
+
+      <section id="info-sede" class="info-section fade-in-section">
+        <div class="vertical-line"></div>
+        
+        <h2 class="section-title">LOCATION</h2>
+        
+        <div class="location-row">
+            <span class="address-text">{sede.address.toUpperCase()}</span>
+            <a href={sede.mapsUrl} target="_blank" class={`btn maps-btn ${sede.slug === 'sede-piazza-tirana-22' ? 'btn-white' : 'btn-outline'}`}>
+                Google Maps <span class="pin-icon">📍</span>
+            </a>
+        </div>
+
+        <h2 class="section-title mt-large">ORARI</h2>
+        
+        <div class="hours-container">
+            <ul class="hours-list">
+                {sede.hours.map(hour => {
+                    const isChiuso = hour.includes('CHIUSO');
+                    let className = 'hour-item';
+                    if (isChiuso && sede.slug === 'sede-piazza-tirana-22' && hour.toUpperCase().includes('LUNEDÌ')) return <li class="hour-item highlight-white">{hour}</li>;
+                    if (isChiuso && sede.slug === 'sede-tibaldi-10' && hour.toUpperCase().includes('MERCOLEDÌ')) return <li class="hour-item highlight-yellow">{hour}</li>;
+                    
+                    const isTirana = sede.slug === 'sede-piazza-tirana-22';
+                    return <li class={`hour-item ${isTirana ? 'tirana-block' : 'tibaldi-block'}`}>{hour}</li>;
+                })}
+            </ul>
+        </div>
+      </section>
+
+    </main>
+
+    <Footer />
+    
+    <style>
+        .split-row {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between;
+            align-items: center;
+            gap: 4rem;
+            width: 100%;
+        }
+        
+        .split-row.reverse {
+            flex-direction: row-reverse !important;
+        }
+        
+        .text-col, .img-col {
+            flex: 1;
+        }
+        
+        .text-col p {
+             margin-bottom: 2rem;
+             color: var(--color-text-muted);
+        }
+
+        .rounded-img {
+            border-radius: 8px;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            max-height: 500px;
+        }
+
+        .shadow-img {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .event-card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        /* Updated Info Section Styles */
+        .info-section {
+            padding: 4rem 1rem;
+            text-align: center;
+            background-color: var(--color-bg-dark); /* Default dark/black */
+            position: relative;
+        }
+
+        .theme-tirana .info-section {
+            background-color: #5B0822; /* Matches specific Tirana purple */
+        }
+
+        .vertical-line {
+            width: 1px;
+            height: 60px;
+            background-color: var(--color-primary);
+            margin: 0 auto 2rem;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            color: #fff;
+        }
+        
+        .mt-large {
+            margin-top: 3rem;
+        }
+
+        .location-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .address-text {
+            font-size: 1.2rem;
+            font-family: var(--font-heading);
+            color: #fff;
+            letter-spacing: 0.05em;
+        }
+
+        .maps-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: none; /* "Google Maps" is mixed case in screenshot */
+            font-family: var(--font-body);
+            font-weight: 500;
+            padding: 0.5rem 1.2rem;
+            font-size: 1rem;
+        }
+        
+        /* Tirana specific button: White bg, dark text */
+        .btn-white {
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 4px; /* Slightly squarer in screenshot */
+        }
+        .btn-white:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .hours-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hours-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .hour-item {
+            padding: 0.5rem 1.5rem;
+            color: #fff;
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 1.1rem;
+            border-radius: 4px;
+        }
+
+        /* Tirana blocks: Dark brownish bg */
+        .tirana-block {
+            background-color: rgba(60, 10, 25, 0.6); /* Semi-transparent dark overlay */
+        }
+        
+        /* Tibaldi blocks: Dark greyish bg */
+        .tibaldi-block {
+             background-color: rgba(255, 255, 255, 0.1); 
+        }
+
+        .highlight-white {
+            background-color: #fff;
+            color: #000;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .highlight-yellow {
+            background-color: var(--color-primary);
+            color: #000;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 900px) {
+            .split-row {
+                flex-direction: column;
+            }
+             .split-row.reverse {
+                flex-direction: column;
+            }
+            .location-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    <script>
+        // Scroll Animation Observer using Astro page events for View Transitions compatibility
+        document.addEventListener('astro:page-load', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const sections = document.querySelectorAll('.fade-in-section');
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+    
+    <style is:global>
+        /* Global Animation Styles */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+        
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+  </body>
+</html>

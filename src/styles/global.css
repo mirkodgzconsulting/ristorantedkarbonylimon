@@ -1,0 +1,201 @@
+/* Global Styles & Variables */
+
+/* Font Definitions */
+/* The user will upload these fonts to /public/fonts/ */
+@font-face {
+  font-family: 'Flame Sans';
+  src: url('/fonts/FlameSans-Regular.woff2') format('woff2'),
+    url('/fonts/FlameSans-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Flame Sans';
+  src: url('/fonts/FlameSans-Bold.woff2') format('woff2'),
+    url('/fonts/FlameSans-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Trade Gothic LT';
+  src: url('/fonts/TradeGothicLT-Bold.woff') format('woff');
+  font-weight: 400;
+  /* Map normal weight to this file too so it works everywhere */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Trade Gothic LT';
+  src: url('/fonts/TradeGothicLT-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Colors */
+  --color-primary: #ffd738;
+  --color-bg: #121212;
+  --color-bg-dark: #0a0a0a;
+  --color-text: #ffffff;
+  --color-text-muted: #a0a0a0;
+
+  /* Fonts */
+  --font-body: 'Flame Sans', system-ui, Arial, sans-serif;
+  --font-heading: 'Trade Gothic LT', Impact, sans-serif;
+
+  /* Spacing */
+  --spacing-container: 1200px;
+  --spacing-padding: 1.5rem;
+}
+
+/* Theme Overrides */
+.theme-tirana {
+  --color-bg: #5B0822;
+  --color-bg-dark: #5B0822;
+  /* Keep same flat color as requested */
+}
+
+/* Reset & Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  width: 100%;
+  overflow-x: hidden;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/pattern-bg-allpages.png');
+  background-repeat: repeat;
+  background-size: 10%;
+  opacity: 0.15;
+  /* Adjust opacity to blend nicely (not too strong) */
+  pointer-events: none;
+  z-index: -1;
+  mix-blend-mode: overlay;
+  /* Optional: helps blend with background color */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  margin: 0 0 1rem 0;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+/* Utility Classes */
+.container {
+  max-width: var(--spacing-container);
+  margin: 0 auto;
+  padding: 0 var(--spacing-padding);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.btn {
+  display: inline-block;
+  background-color: transparent;
+  /* Default transparent as requested */
+  color: var(--color-primary);
+  padding: 0.3rem 1rem;
+  font-weight: 500;
+  font-family: var(--font-body);
+  /* Flame Sans */
+  font-size: 17px;
+  /* Explicit request */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  border: 1px solid var(--color-primary);
+  border-radius: 50px;
+  /* "Redondo" */
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  background-color: var(--color-primary);
+  color: #000;
+}
+
+/* Specific override for filled branding buttons if needed, generally adhering to global now */
+.btn-filled {
+  background-color: var(--color-primary);
+  color: #000;
+}
+
+.btn-filled:hover {
+  background-color: #fff;
+  border-color: #fff;
+}
+
+.btn-outline {
+  /* Alias to base .btn now since base is outlined by default per request */
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary);
+  color: #000;
+}

@@ -1,0 +1,123 @@
+<footer class="footer" id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>VIENI A TROVARCI</h3>
+        <p>
+            <a href="/sede-tibaldi-10/" style="display:block; margin-bottom: 0.5rem; color: #fff;">Viale Tibaldi 10, Milano</a>
+            <a href="/sede-piazza-tirana-22/" style="display:block; color: #fff;">Piazza Tirana 22, Milano</a>
+        </p>
+        <p class="p-iva" style="color: #fff;">P.IVA IT07912400962</p>
+      </div>
+      <div class="footer-col">
+          <h3>CONTATTACI</h3>
+          <p><a href="mailto:info@ristorantedkarbonylimon.it" style="color: #fff;">info@ristorantedkarbonylimon.it</a></p>
+          <div class="contact-numbers" style="margin: 1rem 0;">
+             <a href="tel:+39024156544" style="display:block; color: #fff;">+39 02 415 6544</a>
+             <a href="tel:+393514780902" style="display:block; color: #fff;">+39 351 478 0902</a>
+          </div>
+          <div class="prenota-links" style="margin-top: 1rem;">
+             <a href="https://wa.link/kugf7q" target="_blank" style="display:block; color: var(--color-primary); font-weight: bold; margin-bottom:0.5rem;">Prenota Tibaldi (WhatsApp)</a>
+             <a href="https://wa.link/01lvev" target="_blank" style="display:block; color: var(--color-primary); font-weight: bold;">Prenota Tirana (WhatsApp)</a>
+          </div>
+      </div>
+      <div class="footer-col">
+        <h3>SEGUICI</h3>
+        <div class="social-links">
+            <a href="https://www.facebook.com/dkarbonylimon1" target="_blank" aria-label="Facebook Tibaldi" style="color: #fff;">FB Tibaldi</a>
+            <a href="https://www.instagram.com/dkarbonylimon_tibaldi/" target="_blank" aria-label="Instagram Tibaldi" style="color: #fff;">IG Tibaldi</a>
+        </div>
+        <div class="social-links" style="margin-top: 5px;">
+             <a href="https://www.facebook.com/dkarbonylimon2RistorantePeruviano" target="_blank" aria-label="Facebook Tirana" style="color: #fff;">FB Tirana</a>
+             <a href="https://www.instagram.com/dkarbonylimon_tirana" target="_blank" aria-label="Instagram Tirana" style="color: #fff;">IG Tirana</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+        <p style="color: #fff;">&copy; {new Date().getFullYear()} Ristorante D'Karbon & Limon.</p>
+        <div class="policy-links">
+            <a href="https://www.iubenda.com/privacy-policy/50783404" target="_blank" style="color: #fff;">Privacy Policy</a>
+            <a href="https://www.iubenda.com/privacy-policy/50783404/cookie-policy" target="_blank" style="color: #fff;">Cookie Policy</a>
+        </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background-color: var(--color-bg-dark);
+    padding: 4rem 0 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 4rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-col h3 {
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+  }
+
+  .footer-col p, .footer-col a {
+    color: #fff; /* Enforce white text */
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+  
+  .footer-col a:hover {
+      color: var(--color-primary) !important;
+  }
+  
+  .p-iva {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      opacity: 0.8;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #fff;
+  }
+  
+  .policy-links {
+      display: flex;
+      gap: 1.5rem;
+  }
+  
+  .social-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+  }
+  
+  .social-links a:hover, .policy-links a:hover {
+      color: var(--color-primary);
+  }
+
+  @media (max-width: 768px) {
+      .footer-grid {
+          grid-template-columns: 1fr;
+          text-align: center;
+      }
+      .footer-bottom {
+          flex-direction: column;
+          align-items: center;
+      }
+      .social-links {
+          justify-content: center;
+      }
+  }
+</style>

@@ -1,0 +1,57 @@
+---
+import Head from '../components/Head.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+const title = "Cookie Policy - Ristorante D'Karbon & Limon";
+const description = "Cookie Policy di Ristorante D'Karbon & Limon.";
+---
+
+<html lang="it">
+  <head>
+    <Head title={title} description={description} />
+  </head>
+  <body>
+    <div class="container policy-header">
+       <a href="/" class="back-link">← Torna alla Home</a>
+       <h1>Cookie Policy</h1>
+    </div>
+    
+    <div class="container policy-content">
+      <p>Ultimo aggiornamento: Gennaio 2024</p>
+      
+      <h2>Cosa sono i cookie</h2>
+      <p>...</p>
+      
+      <h2>Tipologie di cookie utilizzate</h2>
+      <p>...</p>
+      
+      <p><em>(Inserire qui il testo completo della cookie policy generato legalmente)</em></p>
+    </div>
+
+    <Footer />
+
+    <style>
+      .policy-header {
+        padding-top: 4rem;
+        margin-bottom: 2rem;
+      }
+      
+      .back-link {
+          display: inline-block;
+          margin-bottom: 1rem;
+          color: var(--color-primary);
+      }
+      
+      .policy-content {
+          max-width: 800px;
+          line-height: 1.8;
+      }
+      
+      .policy-content h2 {
+          color: var(--color-primary);
+          margin-top: 2rem;
+      }
+    </style>
+  </body>
+</html>

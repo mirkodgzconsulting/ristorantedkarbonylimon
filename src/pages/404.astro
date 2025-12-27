@@ -1,0 +1,41 @@
+---
+import Head from '../components/Head.astro';
+import '../styles/global.css';
+
+const title = "Pagina Non Trovata - Ristorante D'Karbon & Limon";
+---
+
+<html lang="it">
+  <head>
+    <Head title={title} description="Pagina non trovata" />
+  </head>
+  <body>
+    <div class="error-container">
+      <h1>404</h1>
+      <p>Pagina non trovata</p>
+      <a href="/" class="btn">TORNA ALLA HOME</a>
+    </div>
+
+    <style>
+      .error-container {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      
+      h1 {
+          font-size: 8rem;
+          color: var(--color-primary);
+          margin: 0;
+      }
+      
+      p {
+          font-size: 1.5rem;
+          margin-bottom: 2rem;
+      }
+    </style>
+  </body>
+</html>
