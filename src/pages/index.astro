@@ -14,21 +14,20 @@ const description = "Ristorante peruviano a Milano. Scegli la tua sede: Viale Ti
   </head>
   <body>
     <!-- Loading Screen -->
-    <div id="loading-screen">
-        <img src="/assets/dkarbonylimon-foto-og.jpg" alt="Loading..." />
-    </div>
-
     <div class="intro-container">
       <div class="logo-overlay">
-        <img src="/assets/logo.png" alt="DK&L Logo" width="80" height="80" onerror="this.style.display='none'" />
         <div class="welcome-text">WELCOME TO</div>
+        <img src="/assets/dkarbonylimon-foto-og.jpg" alt="DK&L Logo" class="central-logo" />
       </div>
       
       <a href="/sede-tibaldi-10/" class="split left">
         <div class="bg-image lazy-bg" data-bg="/assets/intro-left.webp"></div>
         <div class="content">
           <h2>VIALE TIBALDI 10, MILANO</h2>
-          <span class="btn intro-btn">📍 SCEGLI SEDE</span>
+          <span class="btn intro-btn">
+            <span class="material-symbols-outlined" style="font-size: 1.2em;">location_on</span>
+            SCEGLI SEDE
+          </span>
         </div>
       </a>
       
@@ -36,36 +35,18 @@ const description = "Ristorante peruviano a Milano. Scegli la tua sede: Viale Ti
         <div class="bg-image lazy-bg" data-bg="/assets/intro-right.webp"></div>
         <div class="content">
           <h2>PIAZZA TIRANA 22, MILANO</h2>
-          <span class="btn intro-btn">📍 SCEGLI SEDE</span>
+          <span class="btn intro-btn">
+            <span class="material-symbols-outlined" style="font-size: 1.2em;">location_on</span>
+            SCEGLI SEDE
+          </span>
         </div>
       </a>
     </div>
 
     <script>
-      // ... (existing script) ...
-    </script>
-
-    <style>
-      /* ... (existing styles) ... */
-      
-      .intro-btn {
-          border: 1px solid #000 !important;
-          color: #fff;
-          transition: all 0.3s ease;
-      }
-      
-      .intro-btn:hover {
-          color: #000 !important;
-          background-color: var(--color-primary);
-          border-color: var(--color-primary) !important;
-      }
-
-      /* ... (rest of styles) ... */
-    </div>
-
-    <script>
       // Simple lazy load for background images
-      document.addEventListener("DOMContentLoaded", function() {
+      // Simple lazy load for background images - Updated for View Transitions
+      document.addEventListener("astro:page-load", function() {
         var lazyBackgrounds = [].slice.call(document.querySelectorAll(".lazy-bg"));
         
         if ("IntersectionObserver" in window) {
@@ -85,19 +66,6 @@ const description = "Ristorante peruviano a Milano. Scegli la tua sede: Viale Ti
           });
         }
       });
-      
-      // Loading Screen Logic
-      window.addEventListener('load', () => {
-          const loader = document.getElementById('loading-screen');
-          if (loader) {
-              setTimeout(() => {
-                  loader.style.opacity = '0';
-                  setTimeout(() => {
-                      loader.style.display = 'none';
-                  }, 800); // Wait for transition
-              }, 1000); // Minimum visibility time
-          }
-      });
     </script>
 
     <style>
@@ -109,59 +77,38 @@ const description = "Ristorante peruviano a Milano. Scegli la tua sede: Viale Ti
         display: flex;
       }
       
-      /* Loading Screen Styles */
-      #loading-screen {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: #000;
-          z-index: 9999;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          transition: opacity 0.8s ease-out;
-      }
-      
-      #loading-screen img {
-          max-width: 200px;
-          border-radius: 50%; /* Circular */
-          aspect-ratio: 1 / 1;
-          object-fit: cover;
-          border: 4px solid var(--color-primary); /* Optional: adds a nice finish */
-          animation: pulse 2s infinite;
-      }
-      
-      @keyframes pulse {
-          0% { transform: scale(0.95); opacity: 0.8; }
-          50% { transform: scale(1.05); opacity: 1; }
-          100% { transform: scale(0.95); opacity: 0.8; }
-      }
-
-      /* ... (keep logo styles) ... */
+      /* Overlay Styles */
       .logo-overlay {
         position: absolute;
-        top: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
+        top: 50%; /* Centered vertically */
+        left: 50%; /* Centered horizontally */
+        transform: translate(-50%, -50%); /* Adjust for own size */
         z-index: 10;
         text-align: center;
-        width: 200px;
-      }
-
-      .logo-overlay img {
-        display: block;
-        margin: 0 auto 10px;
+        width: 300px; /* Increased to fit larger logo */
+        pointer-events: none; /* Let clicks pass through */
       }
 
       .welcome-text {
         font-family: var(--font-heading);
-        color: #fff;
-        font-size: 1.2rem;
-        font-size: 1.2rem;
+        color: var(--color-primary); /* Yellow */
+        font-size: calc(1.2rem + 5px); /* Increased size */
+        margin-bottom: 1rem;
         letter-spacing: 0;
         text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+      .central-logo {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #fff; /* White border for contrast */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        display: block;
+        margin: 0 auto;
       }
 
       .split {
@@ -174,9 +121,17 @@ const description = "Ristorante peruviano a Milano. Scegli la tua sede: Viale Ti
         transition: flex 0.5s ease;
         overflow: hidden;
       }
+      
+      .split.left {
+          border-right: 1px solid #fff; /* 1px right */
+      }
+      
+      .split.right {
+          border-left: 1px solid #fff; /* 1px left */
+      }
 
       .split:hover {
-        flex: 1.2; /* Was 1.5 - softer expansion */
+        flex: 1.05;
       }
 
       .bg-image {
@@ -185,7 +140,7 @@ const description = "Ristorante peruviano a Milano. Scegli la tua sede: Viale Ti
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: #222; /* Placeholder color */
+        background-color: #222; 
         background-size: cover;
         background-position: center;
         transition: transform 0.5s ease;
@@ -193,7 +148,7 @@ const description = "Ristorante peruviano a Milano. Scegli la tua sede: Viale Ti
       }
       
       .split:hover .bg-image {
-          transform: scale(1.02); /* Was 1.05 - softer zoom */
+          transform: scale(1.01);
       }
 
       .split::before {
@@ -221,6 +176,7 @@ const description = "Ristorante peruviano a Milano. Scegli la tua sede: Viale Ti
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        margin-top: 150px; /* Push content down to avoid overlap with central logo */
       }
 
       .content h2 {
@@ -252,14 +208,60 @@ const description = "Ristorante peruviano a Milano. Scegli la tua sede: Viale Ti
           flex-direction: column;
         }
         
+        .logo-overlay {
+            /* Keep centered on mobile */
+            top: 50%; 
+            transform: translate(-50%, -50%);
+        }
+        
+        .central-logo {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .content {
+            margin-top: 0; /* No margin needed in vertical stack */
+            padding: 1.5rem; /* Reduced padding for mobile */
+        }
+
         .split:hover {
             flex: 1;
         }
         
+        .split.left {
+            border-right: none;
+            border-bottom: 1px solid #fff;
+        }
+        
+        .split.right {
+            border-left: none;
+            border-top: 1px solid #fff;
+        }
+
         .content h2 {
-            font-size: 1.8rem;
+            font-size: 30px !important;
         }
       }
+      
+      /* Button Styling */
+      .intro-btn {
+          border: 1px solid #000 !important;
+          background-color: var(--color-primary); 
+          color: #000; 
+          letter-spacing: 0px !important; 
+          transition: all 0.3s ease;
+          display: inline-flex !important;
+          align-items: center;
+          gap: 5px;
+      }
+      
+      .intro-btn:hover {
+          color: #000 !important;
+          background-color: #fff;
+          border-color: #fff !important;
+          transform: scale(1.05);
+      }
+
     </style>
   </body>
 </html>

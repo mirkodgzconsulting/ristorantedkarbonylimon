@@ -50,15 +50,15 @@ const { prenotaUrl, isHome = false, logo = '/assets/logo.png' } = Astro.props;
 
 <style>
   .header {
-    position: fixed;
+    position: absolute; /* Was fixed - disables sticky behavior */
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(18, 18, 18, 0.95);
-    backdrop-filter: blur(10px);
+    background-color: transparent; /* Was rgba(18, 18, 18, 0.95) */
+    backdrop-filter: none; /* Was blur(10px) */
     z-index: 1000;
     padding: 1rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%); /* Gradient for readability */
   }
 
   .header-content {
@@ -81,15 +81,32 @@ const { prenotaUrl, isHome = false, logo = '/assets/logo.png' } = Astro.props;
   }
 
   .nav a {
-    font-family: var(--font-heading);
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    font-weight: 700;
+    font-family: var(--font-body); /* Flame Sans */
+    /* text-transform: uppercase; Removed to allow normal capitalization */
+    font-size: 17px;
+    font-weight: 500;
     letter-spacing: 0.05em;
+    position: relative; /* For underline positioning */
+    text-decoration: none;
+  }
+
+  .nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #fff; /* White underline */
+    transition: width 0.3s ease-in-out;
+  }
+
+  .nav a:hover::after {
+    width: 100%;
   }
 
   .nav a:hover {
-    color: var(--color-primary);
+    color: var(--color-primary); /* Keep yellow text on hover */
   }
 
   /* Modern Hamburger */
@@ -161,10 +178,10 @@ const { prenotaUrl, isHome = false, logo = '/assets/logo.png' } = Astro.props;
   }
   
   .mobile-menu a {
-      font-family: var(--font-heading);
-      font-size: 2rem;
-      text-transform: uppercase;
-      font-weight: bold;
+      font-family: var(--font-body); /* Flame Sans */
+      font-size: 23px;
+      /* text-transform: uppercase; Removed */
+      font-weight: 500;
       color: #fff;
       position: relative;
       display: inline-block;
@@ -207,32 +224,39 @@ const { prenotaUrl, isHome = false, logo = '/assets/logo.png' } = Astro.props;
 </style>
 
 <script>
-  const toggle = document.querySelector('.mobile-toggle');
-  const menu = document.querySelector('.mobile-menu');
-  
-  if (toggle && menu) {
-    toggle.addEventListener('click', () => {
-        toggle.classList.toggle('active');
-        menu.classList.toggle('active');
-        const expanded = toggle.getAttribute('aria-expanded') === 'true' || false;
-        toggle.setAttribute('aria-expanded', !expanded);
+  // Handle Menu Logic with Astro View Transitions compatibility
+  document.addEventListener('astro:page-load', () => {
+      const toggle = document.querySelector('.mobile-toggle');
+      const menu = document.querySelector('.mobile-menu');
+      
+      if (toggle && menu) {
+        // Clone and replace toggle to remove old event listeners
+        const newToggle = toggle.cloneNode(true);
+        toggle.parentNode.replaceChild(newToggle, toggle);
         
-        // Prevent body scroll when menu is open
-        if (menu.classList.contains('active')) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
-    });
-    
-    // Close on link click
-    menu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            toggle.classList.remove('active');
-            menu.classList.remove('active');
-            toggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
+        newToggle.addEventListener('click', () => {
+            newToggle.classList.toggle('active');
+            menu.classList.toggle('active');
+            const expanded = newToggle.getAttribute('aria-expanded') === 'true' || false;
+            newToggle.setAttribute('aria-expanded', !expanded);
+            
+            // Prevent body scroll when menu is open
+            if (menu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
         });
-    });
-  }
+        
+        // Close on link click
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                newToggle.classList.remove('active');
+                menu.classList.remove('active');
+                newToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            });
+        });
+      }
+  });
 </script>

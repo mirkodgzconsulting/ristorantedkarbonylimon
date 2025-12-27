@@ -77,18 +77,11 @@ const schema = {
       <Hero 
         image={sede.images.hero} 
         title={sede.name.toUpperCase()} 
-        subtitle={sede.address}
+        subtitle="Un'esperienza culinaria indimenticabile nel cuore di Milano. Scopri i sapori autentici del Perù."
         prenotaUrl={sede.prenotaUrl}
       />
 
-      <Section id="welcome" class="text-center fade-in-section">
-        <div style="font-family: var(--font-heading); margin-bottom: 2rem; color: var(--color-primary);">WELCOME TO</div>
-         <h1>Ristorante D'Karbon & Limon</h1>
-         <p style="max-width: 700px; margin: 0 auto;">
-           Un'esperienza culinaria indimenticabile nel cuore di Milano.
-           Scopri i sapori autentici del Perù.
-         </p>
-      </Section>
+
 
       <Section id="menu" dark class="fade-in-section">
         <div class="split-row">
@@ -208,6 +201,12 @@ const schema = {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .events-grid {
+                grid-template-columns: 1fr; /* Stack images on mobile */
+            }
         }
         
         .event-card img {
@@ -335,10 +334,10 @@ const schema = {
 
         @media (max-width: 900px) {
             .split-row {
-                flex-direction: column;
+                flex-direction: column !important;
             }
              .split-row.reverse {
-                flex-direction: column;
+                flex-direction: column !important; /* Forces Text then Image on Mobile */
             }
             .location-row {
                 flex-direction: column;
@@ -350,8 +349,8 @@ const schema = {
         document.addEventListener('astro:page-load', () => {
             const observerOptions = {
                 root: null,
-                rootMargin: '0px',
-                threshold: 0.1
+                rootMargin: '0px 0px -50px 0px', /* Trigger slightly before it hits bottom */
+                threshold: 0 /* Trigger as soon as 1 pixel is visible */
             };
 
             const observer = new IntersectionObserver((entries, observer) => {
@@ -366,12 +365,17 @@ const schema = {
             const sections = document.querySelectorAll('.fade-in-section');
             sections.forEach(section => {
                 observer.observe(section);
+                // Fallback: if already visible/near viewport, trigger manually
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight) {
+                    section.classList.add('is-visible');
+                }
             });
         });
     </script>
     
     <style is:global>
-        /* Global Animation Styles */
+        /* Global Animation Styles - Verified Simple Version */
         .fade-in-section {
             opacity: 0;
             transform: translateY(30px);
@@ -380,8 +384,8 @@ const schema = {
         }
         
         .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
+            opacity: 1 !important;
+            transform: translateY(0) !important;
         }
     </style>
   </body>
