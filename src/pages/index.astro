@@ -3,13 +3,27 @@ import Head from '../components/Head.astro';
 import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 
+import { sedes } from '../data/siteData';
+
 const title = "Ristoranti dKarbon y Limon a Milano";
 const description = "Ristorante peruviano a Milano. Scegli la tua sede: Viale Tibaldi o Piazza Tirana. Cucina autentica, cocktail bar, eventi.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Ristorante D'Karbon y Limon",
+  "url": "https://ristorantedkarbonylimon.it",
+  "logo": "https://ristorantedkarbonylimon.it/assets/dkarbonylimon-foto-og.jpg",
+  "description": description,
+  "sameAs": [
+    ...new Set(sedes.flatMap(sede => Object.values(sede.social)))
+  ]
+};
 ---
 
 <html lang="it">
   <head>
-    <Head title={title} description={description} />
+    <Head title={title} description={description} schema={schema} />
     <ViewTransitions />
   </head>
   <body>

@@ -7,13 +7,14 @@ export interface Props {
   schema?: object;
 }
 
-const { title, description, image = '/assets/intro-left.webp', canonicalURL = Astro.url, schema } = Astro.props;
+const { title, description, image = '/assets/dkarbonylimon-foto-og.jpg', canonicalURL = Astro.url, schema } = Astro.props;
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/jpeg" href="/assets/favicon-512x512-sitoweb-dkarbonylimon.jpg" />
+<link rel="apple-touch-icon" href="/assets/favicon-512x512-sitoweb-dkarbonylimon.jpg" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <meta name="generator" content={Astro.generator} />
 
