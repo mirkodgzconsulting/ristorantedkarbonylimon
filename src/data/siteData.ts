@@ -66,7 +66,7 @@ export const sedes: SedeData[] = [
         }
     },
     {
-        slug: 'sede-piazza-tirana-22',
+        slug: 'sede-tirana-22',
         name: 'Piazza Tirana',
         logo: '/assets/logodkarbonylimon-sede-tirana.png',
         address: 'Piazza Tirana 22, Milano',

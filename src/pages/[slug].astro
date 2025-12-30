@@ -74,7 +74,7 @@ const schema = {
     <Head title={title} description={description} image={sede.images.hero} schema={schema} />
     <ViewTransitions />
   </head>
-  <body class={sede.slug === 'sede-piazza-tirana-22' ? 'theme-tirana' : ''}>
+  <body class={sede.slug === 'sede-tirana-22' ? 'theme-tirana' : ''}>
     <Header prenotaUrl={sede.prenotaUrl} logo={sede.logo} />
 
     <main>
@@ -140,7 +140,7 @@ const schema = {
         
         <div class="location-row">
             <span class="address-text">{sede.address.toUpperCase()}</span>
-            <a href={sede.mapsUrl} target="_blank" class={`btn maps-btn ${sede.slug === 'sede-piazza-tirana-22' ? 'btn-white' : 'btn-outline'}`}>
+            <a href={sede.mapsUrl} target="_blank" class={`btn maps-btn ${sede.slug === 'sede-tirana-22' ? 'btn-white' : 'btn-outline'}`}>
                 Google Maps <span class="pin-icon">📍</span>
             </a>
         </div>
@@ -152,10 +152,10 @@ const schema = {
                 {sede.hours.map(hour => {
                     const isChiuso = hour.includes('CHIUSO');
                     let className = 'hour-item';
-                    if (isChiuso && sede.slug === 'sede-piazza-tirana-22' && hour.toUpperCase().includes('LUNEDÌ')) return <li class="hour-item highlight-white">{hour}</li>;
+                    if (isChiuso && sede.slug === 'sede-tirana-22' && hour.toUpperCase().includes('LUNEDÌ')) return <li class="hour-item highlight-white">{hour}</li>;
                     if (isChiuso && sede.slug === 'sede-tibaldi-10' && hour.toUpperCase().includes('MERCOLEDÌ')) return <li class="hour-item highlight-yellow">{hour}</li>;
                     
-                    const isTirana = sede.slug === 'sede-piazza-tirana-22';
+                    const isTirana = sede.slug === 'sede-tirana-22';
                     return <li class={`hour-item ${isTirana ? 'tirana-block' : 'tibaldi-block'}`}>{hour}</li>;
                 })}
             </ul>
